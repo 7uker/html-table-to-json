@@ -26,7 +26,7 @@ const jsonTables = new HtmlTableToJson(`
         <th>Name</th>
     </tr>
     <tr>
-        <td td colspan="4">Unicorn</td>
+        <td colspan="4">Unicorn</td>
         <td>Pink</td>
         <td>Billy</td>
     </tr>
