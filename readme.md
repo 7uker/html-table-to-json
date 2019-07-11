@@ -9,7 +9,7 @@
 ## Install
 
 ```
-$ npm install --save html-table-to-json
+$ npm install --save 7uker/html-table-to-json
 ```
 
 
