@@ -58,7 +58,6 @@ class HtmlTableToJson {
       let attr = {};
       if (Object.keys(attrRaw).length) {
         for (let step in attrRaw) {
-          if (step != 'td')
             attr[step] = attrRaw[step];
         }
       }
@@ -85,7 +84,6 @@ class HtmlTableToJson {
         let attr = {};
         if (Object.keys(attrRaw).length) {
           for (let step in attrRaw) {
-            if (step != 'th')
               attr[step] = attrRaw[step];
           }
         }
