@@ -3,7 +3,7 @@
 const cheerio = require('cheerio')
 
 class HtmlTableToJson {
-  constructor (html, opts) {
+  constructor(html, opts) {
     if (typeof html !== 'string') { throw new TypeError('html input must be a string') }
 
     this.html = html
@@ -17,23 +17,23 @@ class HtmlTableToJson {
     this._process()
   }
 
-  static factory (html, opts) {
+  static factory(html, opts) {
     return new HtmlTableToJson(html, opts)
   }
 
-  get count () {
+  get count() {
     return Number.isInteger(this._count) ? this._count : (this._count = this._$('table').get().length)
   }
 
-  get results () {
+  get results() {
     return this._results
   }
 
-  get headers () {
+  get headers() {
     return this._headers
   }
 
-  _process () {
+  _process() {
     if (this._results.length) { return this._results }
 
     this._$('table').each((i, element) => this._processTable(i, element))
@@ -41,7 +41,7 @@ class HtmlTableToJson {
     return this._results
   }
 
-  _processTable (tableIndex, table) {
+  _processTable(tableIndex, table) {
     this._results[tableIndex] = []
     this._buildHeaders(tableIndex, table)
 
@@ -49,15 +49,28 @@ class HtmlTableToJson {
     this._pruneEmptyRows(tableIndex)
   }
 
-  _processRow (tableIndex, index, row) {
+  _processRow(tableIndex, index, row) {
     this._results[tableIndex][index] = {}
 
     this._$(row).find('td').each((i, cell) => {
-      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = this._$(cell).text().trim()
+
+      let attrRaw = this._$(cell).attr();
+      let attr;
+      if (Object.keys(attrRaw).length) {
+        attr = {};
+        for (let step in attrRaw) {
+          attr[step] = attrRaw[step];
+        }
+      }
+
+      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = {};
+      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)].val = this._$(cell).text().trim();
+      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)].attr = attr || undefined;
+
     })
   }
 
-  _buildHeaders (index, table) {
+  _buildHeaders(index, table) {
     this._headers[index] = []
 
     this._$(table).find('tr').each((i, row) => {
@@ -67,7 +80,7 @@ class HtmlTableToJson {
     })
   }
 
-  _pruneEmptyRows (tableIndex) {
+  _pruneEmptyRows(tableIndex) {
     this._results[tableIndex] = this._results[tableIndex].filter(t => Object.keys(t).length)
   }
 }
