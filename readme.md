@@ -19,30 +19,35 @@ $ npm install --save html-table-to-json
 const HtmlTableToJson = require('html-table-to-json');
 
 const jsonTables = new HtmlTableToJson(`
-        <table>
-            <tr>
-                <th>Animal</th>
-                <th>Color</th>
-                <th>Name</th>
-            </tr>
-            <tr>
-                <td>Unicorn</td>
-                <td>Pink</td>
-                <td>Billy</td>
-            </tr>
-            <tr>
-                <td>Walrus</td>
-                <td>Orange</td>
-                <td>Sue</td>
-            </tr>
-        </table>
+<table>
+    <tr>
+        <th colspan ="4">Animal</th>
+        <th>Color</th>
+        <th>Name</th>
+    </tr>
+    <tr>
+        <td td colspan="4">Unicorn</td>
+        <td>Pink</td>
+        <td>Billy</td>
+    </tr>
+    <tr>
+        <td>Walrus</td>
+        <td>Orange</td>
+        <td>Sue</td>
+    </tr>
+</table>
     `);
 
-console.log(jsonTables.results);
-/* => [[
- *      {Animal: 'Unicorn', Color: 'Pink', Name: 'Billy'},
- *      {Animal: 'Walrus', Color: 'Orange', Name: 'Sue'}
- *    ]]
+console.log(jsonTables.results[0][0]);
+/* 
+
+{ Animal:
+   { val: 'Unicorn',
+     attr: { colspan: '4' },
+     thAttr: { colspan: '4' } },
+  Color: { val: 'Pink' },
+  Name: { val: 'Billy' } }
+
  */
 
 console.log(jsonTables.count);

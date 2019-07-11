@@ -55,17 +55,22 @@ class HtmlTableToJson {
     this._$(row).find('td').each((i, cell) => {
 
       let attrRaw = this._$(cell).attr();
-      let attr;
+      let attr = {};
       if (Object.keys(attrRaw).length) {
-        attr = {};
         for (let step in attrRaw) {
-          attr[step] = attrRaw[step];
+          if (step != 'td')
+            attr[step] = attrRaw[step];
         }
       }
 
-      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)] = {};
-      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)].val = this._$(cell).text().trim();
-      this._results[tableIndex][index][this._headers[tableIndex][i] || (i + 1)].attr = attr || undefined;
+      this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)] = {};
+      this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)].val = this._$(cell).text().trim();
+
+      if (Object.keys(attr).length)
+        this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)].attr = attr;
+
+      if (this._headers[tableIndex][i].attr)
+        this._results[tableIndex][index][this._headers[tableIndex][i].val].thAttr = this._headers[tableIndex][i].attr
 
     })
   }
@@ -75,7 +80,21 @@ class HtmlTableToJson {
 
     this._$(table).find('tr').each((i, row) => {
       this._$(row).find('th').each((j, cell) => {
-        this._headers[index][j] = this._$(cell).text().trim()
+
+        let attrRaw = this._$(cell).attr();
+        let attr = {};
+        if (Object.keys(attrRaw).length) {
+          for (let step in attrRaw) {
+            if (step != 'th')
+              attr[step] = attrRaw[step];
+          }
+        }
+
+        this._headers[index][j] = {};
+        this._headers[index][j].val = this._$(cell).text().trim();
+
+        if (Object.keys(attr).length)
+          this._headers[index][j].attr = attr;
       })
     })
   }
