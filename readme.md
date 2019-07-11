@@ -1,5 +1,7 @@
 # html-table-to-json [![Build Status](https://travis-ci.org/brandon93s/html-table-to-json.svg?branch=master)](https://travis-ci.org/brandon93s/html-table-to-json)
 
+**Fork note - cells are returned as an object instead of string, containing value and html attributes
+
 > Extracts tables from a provided html snippet and converts them to JSON objects
 
 *Note: Currently always returns an array of results regardless of table count*
