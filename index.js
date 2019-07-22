@@ -62,15 +62,15 @@ class HtmlTableToJson {
             attr[step] = attrRaw[step];
         }
       }
-
-      this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)] = {};
-      this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)].val = this._$(cell).text().trim();
+      let name = this._headers[tableIndex][i] ? this._headers[tableIndex][i].val : i + 1;
+      this._results[tableIndex][index][name] = {};
+      this._results[tableIndex][index][name].val = this._$(cell).text().trim();
 
       if (Object.keys(attr).length)
-        this._results[tableIndex][index][this._headers[tableIndex][i].val || (i + 1)].attr = attr;
+        this._results[tableIndex][index][name].attr = attr;
 
-      if (this._headers[tableIndex][i].attr)
-        this._results[tableIndex][index][this._headers[tableIndex][i].val].thAttr = this._headers[tableIndex][i].attr
+      if (isNaN(name) && this._headers[tableIndex][i].attr)
+        this._results[tableIndex][index][name].thAttr = this._headers[tableIndex][i].attr
 
     })
   }
