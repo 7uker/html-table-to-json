@@ -56,6 +56,17 @@ class HtmlTableToJson {
 
       let attrRaw = this._$(cell).attr();
       let attr = {};
+      let children = {};
+
+      this._$(cell).find('*').each((j, tag) => {
+        children[tag.name] = {};
+        if (tag.type == 'tag') {
+          for (let step in tag.attribs) {
+            children[tag.name][step] = tag.attribs[step];
+          }
+        }
+      })
+
       if (Object.keys(attrRaw).length) {
         for (let step in attrRaw) {
             attr[step] = attrRaw[step];
@@ -67,6 +78,9 @@ class HtmlTableToJson {
 
       if (Object.keys(attr).length)
         this._results[tableIndex][index][name].attr = attr;
+
+      if (Object.keys(children).length)
+        this._results[tableIndex][index][name].children = children;
 
       if (isNaN(name) && this._headers[tableIndex][i].attr)
         this._results[tableIndex][index][name].thAttr = this._headers[tableIndex][i].attr
